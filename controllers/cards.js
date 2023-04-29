@@ -3,8 +3,9 @@ const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require('../utils/errors')
 
 const handleError = (err, res) => {
   switch (err.name) {
-    case 'CastError' || 'ValidationError':
-      res.status(BAD_REQUEST).send({ message: 'Incorrect data sent' })
+    case 'CastError':
+    case 'ValidationError':
+      res.status(BAD_REQUEST).send({ message: 'Invalid data sent' })
       break
     case 'DocumentNotFoundError':
       res
