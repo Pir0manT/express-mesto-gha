@@ -39,7 +39,7 @@ const deleteCard = (req, res) => {
     .catch((err) => handleError(err, res))
 }
 
-const toggleLike = (res, req, isLiked = true) => {
+const toggleLike = (req, res, isLiked = true) => {
   const { cardId } = req.params
   return Cards.findByIdAndUpdate(
     cardId,
