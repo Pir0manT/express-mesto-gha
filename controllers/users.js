@@ -1,26 +1,9 @@
 const Users = require('../models/user')
-const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require('../utils/errors')
-
-const handleError = (err, res) => {
-  switch (err.name) {
-    case 'CastError':
-    case 'ValidationError':
-      res.status(BAD_REQUEST).send({ message: 'Invalid data sent' })
-      break
-    case 'DocumentNotFoundError':
-      res
-        .status(NOT_FOUND)
-        .send({ message: 'User with specified id not found' })
-      break
-    default:
-      res.status(SERVER_ERROR).send({ message: 'Internal Server Error' })
-      break
-  }
-}
+const { handleError } = require('../utils/errors')
 
 const getUsers = (req, res) =>
   Users.find({})
-    .then((users) => res.status(200).send(users))
+    .then((users) => res.send(users))
     .catch((err) => handleError(err, res))
 
 const getUser = (req, res) => {
@@ -28,7 +11,7 @@ const getUser = (req, res) => {
   return Users.findById(userId)
     .orFail()
     .then((user) => {
-      res.status(200).send(user)
+      res.send(user)
     })
     .catch((err) => handleError(err, res))
 }
@@ -36,7 +19,7 @@ const getUser = (req, res) => {
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body
   return Users.create({ name, about, avatar })
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(201).send(user))
     .catch((err) => handleError(err, res))
 }
 
@@ -48,7 +31,7 @@ const updateProfile = (req, res) => {
     { new: true, runValidators: true }
   )
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.send(user))
     .catch((err) => handleError(err, res))
 }
 
@@ -60,7 +43,7 @@ const updateAvatar = (req, res) => {
     { new: true, runValidators: true }
   )
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.send(user))
     .catch((err) => handleError(err, res))
 }
 

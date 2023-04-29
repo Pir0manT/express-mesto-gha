@@ -9,7 +9,7 @@ const {
 router.get('/', getCards)
 router.post('/', createCard)
 router.delete('/:cardId', deleteCard)
-router.put('/:cardId/likes', (req, res) => toggleLike(req, res))
+router.put('/:cardId/likes', toggleLike)
 router.delete('/:cardId/likes', (req, res) => toggleLike(req, res, false))
 
 module.exports = router
