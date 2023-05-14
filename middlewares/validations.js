@@ -13,8 +13,14 @@ const validationUrl = (url) => {
 
 const validationLogin = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
+    email: Joi.string()
+      .required()
+      .email()
+      .message('Поле email должно быть заполнено'),
+    password: Joi.string()
+      .required()
+      .min(8)
+      .message('Поле пароль должно быть заполнено'),
   }),
 })
 
@@ -23,29 +29,51 @@ const validationCreateUser = celebrate({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().custom(validationUrl),
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    email: Joi.string()
+      .required()
+      .email()
+      .message('Поле email должно быть заполнено'),
+    password: Joi.string()
+      .required()
+      .min(8)
+      .message('Поле пароль должно быть заполнено'),
   }),
 })
 
 const validationUpdateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    about: Joi.string().min(2).max(30).required(),
+    name: Joi.string()
+      .required()
+      .min(2)
+      .max(30)
+      .message(
+        'Имя пользователя должно быть заполнено и содержать не менее 2 и не более 30 миволов'
+      ),
+    about: Joi.string()
+      .required()
+      .min(2)
+      .max(30)
+      .message(
+        'Информация о пользователе должна быть заполнена и содержать не менее 2 и не более 30 миволов'
+      ),
   }),
 })
 
 const validationUpdateAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().custom(validationUrl),
+    avatar: Joi.string()
+      .required()
+      .custom(validationUrl)
+      .message('Введите корректный URL картинки'),
   }),
 })
 
-const validationUserId = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().required().hex().length(24),
-  }),
-})
+const validationId = (schema = 'cardId') =>
+  celebrate({
+    params: Joi.object().keys({
+      [schema]: Joi.string().required().hex().length(24),
+    }),
+  })
 
 const validationCreateCard = celebrate({
   body: Joi.object().keys({
@@ -54,19 +82,12 @@ const validationCreateCard = celebrate({
   }),
 })
 
-const validationCardId = celebrate({
-  params: Joi.object().keys({
-    cardId: Joi.string().required().hex().length(24),
-  }),
-})
-
 module.exports = {
   validationLogin,
   validationCreateUser,
   validationUpdateUser,
   validationUpdateAvatar,
-  validationUserId,
+  validationId,
   validationCreateCard,
-  validationCardId,
   reIsUrl,
 }
