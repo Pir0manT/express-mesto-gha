@@ -19,8 +19,8 @@ require('dotenv').config()
 const {
   PORT = 3000,
   DB_PATH = 'mongodb://127.0.0.1:27017/mestodb',
-  NODE_ENV,
-  MAX_AUTH_ATTEMPTS,
+  NODE_ENV = 'development',
+  MAX_AUTH_ATTEMPTS = 5,
 } = process.env
 
 const authLimiter = rateLimit({
