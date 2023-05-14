@@ -26,14 +26,12 @@ const createUser = (req, res, next) => {
       Users.create({ name, about, avatar, email, password: hash })
     )
     .then((user) =>
-      res
-        .status(201)
-        .send({
-          name: user.name,
-          about: user.about,
-          avatar: user.avatar,
-          email: user.email,
-        })
+      res.status(201).send({
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+      })
     )
     .catch((err) => handleError(err, next))
 }
@@ -87,7 +85,7 @@ const login = (req, res, next) => {
           httpOnly: true,
           sameSite: true,
         })
-        .end()
+        .send({ message: `Welcome back, ${user.name}` })
     })
     .catch((err) => handleError(err, next))
 }
