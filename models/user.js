@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
       // required: [true, 'Поле "about" должно быть заполнено'],
       minlength: [2, 'Минимальная длина поля "about" - 2'],
       maxlength: [30, 'Максимальная длина поля "about" - 30'],
-      default: 'Исследователь океана',
+      default: 'Исследователь',
     },
     avatar: {
       type: String,
