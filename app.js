@@ -16,12 +16,16 @@ const {
 
 require('dotenv').config()
 
-const { PORT = 3000, DB_PATH = 'mongodb://127.0.0.1:27017/mestodb' } =
-  process.env
+const {
+  PORT = 3000,
+  DB_PATH = 'mongodb://127.0.0.1:27017/mestodb',
+  NODE_ENV,
+  MAX_AUTH_ATTEMPTS,
+} = process.env
 
 const authLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 5,
+  max: NODE_ENV === 'production' ? MAX_AUTH_ATTEMPTS : 100,
   message:
     'Too many register or login attempts from this IP, please try again after an hour',
   standardHeaders: true,
