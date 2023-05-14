@@ -2,12 +2,13 @@ const { celebrate, Joi } = require('celebrate')
 const { BAD_REQUEST, StatusCodeError } = require('../utils/errors')
 
 const reIsUrl =
-  /^(https?:\/\/)(www\.)?(?!-)[-a-zA-Z0-9@:%._~#=]{1,249}(?<!-)\.[A-Za-z]{2,6}([-a-zA-Z0-9._~:\/?#\[\]@!$&'()*+,;=]*)#?$/
+  /^(https?:\/\/)(www\.)?(?!-)[-a-zA-Z0-9@:%._~#=]{1,249}(?<!-)\.[A-Za-z]{2,6}([-a-zA-Z0-9._~:/?#[\]@!$&'()*+,;=]*)#?$/
 
 const validationUrl = (url) => {
   if (reIsUrl.test(url)) {
     return url
-  } else throw new StatusCodeError(BAD_REQUEST)
+  }
+  throw new StatusCodeError(BAD_REQUEST)
 }
 
 const validationLogin = celebrate({

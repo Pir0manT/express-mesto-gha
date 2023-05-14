@@ -6,34 +6,38 @@ const CONFLICT = 409
 const SERVER_ERROR = 500
 
 class StatusCodeError extends Error {
+  // eslint-disable-next-line constructor-super
   constructor(statusCode, message = '') {
+    let msg = message
     if (message.length === 0)
       switch (statusCode) {
         case BAD_REQUEST:
-          message = 'Invalid data sent'
+          msg = 'Invalid data sent'
           break
         case UNAUTHORIZED:
-          message = 'Authorization required'
+          msg = 'Authorization required'
           break
         case FORBIDDEN:
-          message = 'Access denied'
+          msg = 'Access denied'
           break
         case NOT_FOUND:
-          message = 'Service not found'
+          msg = 'Service not found'
           break
         case CONFLICT:
-          message = 'User with this email is already registered'
+          msg = 'User with this email is already registered'
           break
         case SERVER_ERROR:
-          message = 'Internal Server Error'
+          msg = 'Internal Server Error'
+          return
+        default:
+          break
       }
-    super(message)
+    super(msg)
     this.statusCode = statusCode
   }
 }
 
 const handleError = (err, next) => {
-  console.log(err)
   switch (err.name) {
     case 'CastError':
     case 'ValidationError':
@@ -52,6 +56,8 @@ const handleError = (err, next) => {
         )
       else next(SERVER_ERROR, 'Mongo Server Error')
       return
+    default:
+      break
   }
   next(err)
 }

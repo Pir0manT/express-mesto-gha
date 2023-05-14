@@ -23,13 +23,13 @@ const deleteCard = (req, res, next) => {
       if (card.owner.toString() === req.user._id)
         Cards.findByIdAndRemove(cardId)
           .orFail()
-          .then((card) => res.send(card))
+          .then((deletedCard) => res.send(deletedCard))
       else throw new StatusCodeError(FORBIDDEN)
     })
     .catch((err) => handleError(err, next))
 }
 
-const toggleLike = (req, res, isLiked = true, next) => {
+const toggleLike = (req, res, next, isLiked = true) => {
   const { cardId } = req.params
   return Cards.findByIdAndUpdate(
     cardId,

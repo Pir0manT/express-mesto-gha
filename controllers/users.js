@@ -53,12 +53,11 @@ const updateAvatar = (req, res, next) => {
     .catch((err) => handleError(err, next))
 }
 
-const getCurrentUser = (req, res, next) => {
-  return Users.findById(req.user._id)
+const getCurrentUser = (req, res, next) =>
+  Users.findById(req.user._id)
     .orFail()
     .then((user) => res.send(user))
     .catch((err) => handleError(err, next))
-}
 
 const login = (req, res, next) => {
   const { email, password } = req.body
